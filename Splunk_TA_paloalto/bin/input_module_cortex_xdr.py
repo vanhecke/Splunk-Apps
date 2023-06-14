@@ -98,7 +98,7 @@ def fetch_incident_details(helper, client, incident):
     helper.log_debug(incident_details)
     return incident_details
 
-def handle_incidents(helper, ew, incidents, get_details, base_url):
+def handle_incidents(helper, ew, incidents, get_details, base_url, client):
     # Save modification time to KVStore
     latest_modification_time = int(
         incidents[-1].get("modification_time"))
@@ -142,7 +142,7 @@ def collect_events(helper, ew):
     helper.set_log_level(log_level)
     
     # Get input values and validate
-    get_details = False 
+    get_details = True 
     api_key_id = int(helper.get_arg("xdr_key_id"))
     api_key = helper.get_arg("xdr_key")
     tenant = helper.get_arg("xdr_tenant")
@@ -181,7 +181,7 @@ def collect_events(helper, ew):
     incidents = fetch_xdr_incidents(helper, client, mod_time)
     
     if incidents:
-        handle_incidents(helper, ew, incidents, get_details, base_url)
+        handle_incidents(helper, ew, incidents, get_details, base_url, client)
     else:
         helper.log_info("No Incidents")
         
